@@ -85,14 +85,15 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         
         // Create a push behavior to get the ball moving
         let pushBehavior = UIPushBehavior(items: [ball], mode: .Instantaneous)
-        pushBehavior.pushDirection = CGVectorMake(0.3, 1.0)
+        pushBehavior.pushDirection = CGVectorMake(0.3, -1.0)
         pushBehavior.magnitude = 0.25
         
         timerLabel.text = "Ready?"
-        let triggerTime = (Int64(NSEC_PER_SEC)*2)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+        let triggerTime1 = (Int64(NSEC_PER_SEC) * 2)
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime1), dispatch_get_main_queue(), { () -> Void in
             self.timerLabel.text = "Go!"
         })
+        
         
         var item = bricks
         item.append(paddle)
@@ -104,10 +105,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         collisionBehavior.collisionMode = .Everything
         collisionBehavior.collisionDelegate = self
         dynamicAnimator.addBehavior(collisionBehavior)
-        
+        let triggerTime = (Int64(NSEC_PER_SEC) * 2)
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
             self.dynamicAnimator.addBehavior(pushBehavior)
         })
+        
     }
     
     func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint){
@@ -115,21 +117,23 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             lives -= 1
             if lives > 0{
                 livesLabel.text = "Lives: \(lives)"
-                ball.center = view.center
-                dynamicAnimator.updateItemUsingCurrentState(ball)
+                sleep(1)
+                self.ball.center = self.view.center
+                self.dynamicAnimator.updateItemUsingCurrentState(self.ball)
             } 
             else{
                 livesLabel.text = "😞GAME OVER😞"
                 ball.removeFromSuperview()
                 collisionBehavior.removeItem(ball)
                 dynamicAnimator.updateItemUsingCurrentState(ball)
-                let triggerTime = (Int64(NSEC_PER_SEC)*2)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                    self.playAgainView.hidden = false
-                })
                 ball.removeFromSuperview()
                 collisionBehavior.removeItem(ball)
                 dynamicAnimator.updateItemUsingCurrentState(ball)
+                let triggerTime = (Int64(NSEC_PER_SEC) * 2)
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+                    self.playAgainView.hidden = false
+                })
+                
             }
         }
     }
@@ -150,14 +154,13 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         }
         if bricksDestroyed == numBricks{
             livesLabel.text = "😃YOU WIN😃"
-            let triggerTime = (Int64(NSEC_PER_SEC)*2)
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                self.playAgainView.hidden = false
-            })
+            sleep(2)
+            self.playAgainView.hidden = false
             ball.removeFromSuperview()
             collisionBehavior.removeItem(ball)
             dynamicAnimator.updateItemUsingCurrentState(ball)
         }
+        
     }
     
     func reNew(){
@@ -172,10 +175,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     
     @IBAction func onTappedYesButton(sender: UIButton) {
         reNew()
-    }
-    
-    @IBAction func onTappedNoButton(sender: UIButton) {
-        playAgainView.hidden = true
     }
     
 }

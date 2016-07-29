@@ -27,36 +27,18 @@
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dXG-4b-6kq">
                                 <rect key="frame" x="180" y="246" width="240" height="108"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Play Again?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXi-O7-8GH">
-                                        <rect key="frame" x="76" y="8" width="88" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ka3-Jr-17E">
-                                        <rect key="frame" x="65" y="37" width="110" height="71"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghr-ES-YgQ">
-                                                <rect key="frame" x="0.0" y="21" width="52" height="30"/>
-                                                <state key="normal" title="Yes"/>
-                                                <connections>
-                                                    <action selector="onTappedYesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cbe-uY-aJX"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ak-yK-lEZ">
-                                                <rect key="frame" x="58" y="21" width="52" height="30"/>
-                                                <state key="normal" title="No"/>
-                                                <connections>
-                                                    <action selector="onTappedNoButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Vde-A7-8dS"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghr-ES-YgQ">
+                                        <rect key="frame" x="52" y="30" width="137" height="47"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="30"/>
+                                        <state key="normal" title="Play Again"/>
+                                        <connections>
+                                            <action selector="onTappedYesButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cbe-uY-aJX"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="ka3-Jr-17E" firstAttribute="centerX" secondItem="dXG-4b-6kq" secondAttribute="centerX" id="8Mc-tY-zBV"/>
-                                    <constraint firstItem="vXi-O7-8GH" firstAttribute="centerX" secondItem="dXG-4b-6kq" secondAttribute="centerX" id="nxw-Xm-j4V"/>
+                                    <constraint firstItem="ghr-ES-YgQ" firstAttribute="centerX" secondItem="dXG-4b-6kq" secondAttribute="centerX" id="F96-gU-X2X"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJW-X1-Fbg">
