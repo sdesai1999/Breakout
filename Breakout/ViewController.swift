@@ -117,7 +117,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             lives -= 1
             if lives > 0{
                 livesLabel.text = "Lives: \(lives)"
-                sleep(1)
                 self.ball.center = self.view.center
                 self.dynamicAnimator.updateItemUsingCurrentState(self.ball)
             } 
@@ -177,6 +176,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         reNew()
     }
     
+    @IBAction func resetButton(sender: UIButton) {
+        reNew()
+    }
 }
 
 
