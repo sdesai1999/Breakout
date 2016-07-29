@@ -55,7 +55,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 }
                 bricks.append(brick)
                 numBricks += 1
-                bricks[numBricks-1].backgroundColor = UIColor.greenColor()
+                bricks[numBricks-1].backgroundColor = UIColor.blueColor()
                 view.addSubview(bricks[numBricks-1])
             }
         }
@@ -71,7 +71,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         // Create dynamic behavior for the ball
         let ballDynamicBehavior = UIDynamicItemBehavior(items: [ball])
         ballDynamicBehavior.friction = 0  // Collision resistance
-        ballDynamicBehavior.resistance = -0.01 // deceleration over time
+        ballDynamicBehavior.resistance = -0.01 // acceleration over time
         ballDynamicBehavior.elasticity = 1.0  // Bounce factor
         ballDynamicBehavior.allowsRotation = false
         dynamicAnimator.addBehavior(ballDynamicBehavior)
@@ -127,6 +127,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
                     self.playAgainView.hidden = false
                 })
+                ball.removeFromSuperview()
+                collisionBehavior.removeItem(ball)
+                dynamicAnimator.updateItemUsingCurrentState(ball)
             }
         }
     }
@@ -151,6 +154,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
                 self.playAgainView.hidden = false
             })
+            ball.removeFromSuperview()
+            collisionBehavior.removeItem(ball)
+            dynamicAnimator.updateItemUsingCurrentState(ball)
         }
     }
     
