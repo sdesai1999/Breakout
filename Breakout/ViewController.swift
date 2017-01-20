@@ -28,24 +28,24 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         super.viewDidLoad()
         livesLabel.text = "Lives: 5"
         timerLabel.text = "Ready?"
-        playAgainView.hidden = true
+        playAgainView.isHidden = true
         dynamicAnimator = UIDynamicAnimator(referenceView: view)
         // add a ball to the frame
-        ball = UIView(frame: CGRectMake(view.center.x - 10, view.center.y, 20, 20))
-        ball.backgroundColor = UIColor.blackColor()
+        ball = UIView(frame: CGRect(x: view.center.x - 10, y: view.center.y, width: 20, height: 20))
+        ball.backgroundColor = UIColor.black
         ball.layer.cornerRadius = 10
         ball.clipsToBounds = true
         view.addSubview(ball)
         
         // Add a red paddle object to the view
-        paddle = UIView(frame: CGRectMake(view.center.x - 40, view.center.y * 1.7, 80, 20))
-        paddle.backgroundColor = UIColor.redColor()
+        paddle = UIView(frame: CGRect(x: view.center.x - 40, y: view.center.y * 1.7, width: 80, height: 20))
+        paddle.backgroundColor = UIColor.red
         view.addSubview(paddle)
         
         for j in 0..<10{
             for i in 0..<10{
-                let brick = UIView(frame: CGRectMake(CGFloat(i) * self.view.frame.width / 10, CGFloat(20*j), self.view.frame.width / 10, 20))
-                brick.layer.borderColor = UIColor.whiteColor().CGColor
+                let brick = UIView(frame: CGRect(x: CGFloat(i) * self.view.frame.width / 10, y: CGFloat(20*j), width: self.view.frame.width / 10, height: 20))
+                brick.layer.borderColor = UIColor.white.cgColor
                 brick.layer.borderWidth = 1
                 if j < 5{
                     brick.alpha = 1
@@ -55,7 +55,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 }
                 bricks.append(brick)
                 numBricks += 1
-                bricks[numBricks-1].backgroundColor = UIColor.blueColor()
+                bricks[numBricks-1].backgroundColor = UIColor.blue
                 view.addSubview(bricks[numBricks-1])
             }
         }
@@ -84,13 +84,13 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator.addBehavior(paddleDynamicBehavior)
         
         // Create a push behavior to get the ball moving
-        let pushBehavior = UIPushBehavior(items: [ball], mode: .Instantaneous)
-        pushBehavior.pushDirection = CGVectorMake(0.3, -1.0)
+        let pushBehavior = UIPushBehavior(items: [ball], mode: .instantaneous)
+        pushBehavior.pushDirection = CGVector(dx: 0.3, dy: -1.0)
         pushBehavior.magnitude = 0.25
         
         timerLabel.text = "Ready?"
         let triggerTime1 = (Int64(NSEC_PER_SEC) * 2)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime1), dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime1) / Double(NSEC_PER_SEC), execute: { () -> Void in
             self.timerLabel.text = "Go!"
         })
         
@@ -102,42 +102,42 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         // Create collision behaviors so ball can bounce off of other objects
         collisionBehavior = UICollisionBehavior(items: item)
         collisionBehavior.translatesReferenceBoundsIntoBoundary = true
-        collisionBehavior.collisionMode = .Everything
+        collisionBehavior.collisionMode = .everything
         collisionBehavior.collisionDelegate = self
         dynamicAnimator.addBehavior(collisionBehavior)
         let triggerTime = (Int64(NSEC_PER_SEC) * 2)
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
             self.dynamicAnimator.addBehavior(pushBehavior)
         })
         
     }
     
-    func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, atPoint p: CGPoint){
+    func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint){
         if item.isEqual(ball) && p.y > paddle.center.y{
             lives -= 1
             if lives > 0{
                 livesLabel.text = "Lives: \(lives)"
                 self.ball.center = self.view.center
-                self.dynamicAnimator.updateItemUsingCurrentState(self.ball)
+                self.dynamicAnimator.updateItem(usingCurrentState: self.ball)
             } 
             else{
                 livesLabel.text = "😞GAME OVER😞"
                 ball.removeFromSuperview()
                 collisionBehavior.removeItem(ball)
-                dynamicAnimator.updateItemUsingCurrentState(ball)
+                dynamicAnimator.updateItem(usingCurrentState: ball)
                 ball.removeFromSuperview()
                 collisionBehavior.removeItem(ball)
-                dynamicAnimator.updateItemUsingCurrentState(ball)
+                dynamicAnimator.updateItem(usingCurrentState: ball)
                 let triggerTime = (Int64(NSEC_PER_SEC) * 2)
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, triggerTime), dispatch_get_main_queue(), { () -> Void in
-                    self.playAgainView.hidden = false
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(triggerTime) / Double(NSEC_PER_SEC), execute: { () -> Void in
+                    self.playAgainView.isHidden = false
                 })
                 
             }
         }
     }
     
-    func collisionBehavior(behavior: UICollisionBehavior, beganContactForItem item1: UIDynamicItem, withItem item2: UIDynamicItem, atPoint p: CGPoint){
+    func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item1: UIDynamicItem, with item2: UIDynamicItem, at p: CGPoint){
         for brick in bricks{
             if (item1.isEqual(ball) && item2.isEqual(brick)) || (item1.isEqual(brick) && item2.isEqual(ball)){
                 timerLabel.text = ""
@@ -145,7 +145,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     brick.alpha = 0.5
                 } 
                 else{
-                    brick.hidden = true
+                    brick.isHidden = true
                     collisionBehavior.removeItem(brick)
                     bricksDestroyed += 1
                 }
@@ -154,29 +154,29 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         if bricksDestroyed == numBricks{
             livesLabel.text = "😃YOU WIN😃"
             sleep(2)
-            self.playAgainView.hidden = false
+            self.playAgainView.isHidden = false
             ball.removeFromSuperview()
             collisionBehavior.removeItem(ball)
-            dynamicAnimator.updateItemUsingCurrentState(ball)
+            dynamicAnimator.updateItem(usingCurrentState: ball)
         }
         
     }
     
     func reNew(){
-        UIApplication.sharedApplication().keyWindow?.rootViewController = storyboard!.instantiateViewControllerWithIdentifier("ViewController")
+        UIApplication.shared.keyWindow?.rootViewController = storyboard!.instantiateViewController(withIdentifier: "ViewController")
     }
     
-    @IBAction func dragPaddle(sender: UIPanGestureRecognizer){
-        let panGesture = sender.locationInView(view)
+    @IBAction func dragPaddle(_ sender: UIPanGestureRecognizer){
+        let panGesture = sender.location(in: view)
         paddle.center.x = panGesture.x
-        dynamicAnimator.updateItemUsingCurrentState(paddle)
+        dynamicAnimator.updateItem(usingCurrentState: paddle)
     }
     
-    @IBAction func onTappedYesButton(sender: UIButton) {
+    @IBAction func onTappedYesButton(_ sender: UIButton) {
         reNew()
     }
     
-    @IBAction func resetButton(sender: UIButton) {
+    @IBAction func resetButton(_ sender: UIButton) {
         reNew()
     }
 }
